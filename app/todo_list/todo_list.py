@@ -1,5 +1,8 @@
-from flask import Flask
+from json import dumps
+from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
+from pymongo import MongoClient
+from bson.json_util import dumps, loads
 from numpy import require
 import pandas as pd
 import ast
@@ -9,6 +12,11 @@ import sys
 app = Flask(__name__)
 api = Api(app)
 
+db_user = os.environ.get("MONGODB_USER")
+db_password = os.environ.get("MONGODB_PASSWORD")
+mongodb_cluster = MongoClient(f"mongodb+srv://{db_user}:{db_password}@cluster0.rxctl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+db = mongodb_cluster["todolistdb"]
+
 class User(Resource):
     """A class to represent a user.
     
@@ -16,10 +24,9 @@ class User(Resource):
     """
     def get(self):
         """Returns all data stored for users if request is successful."""
-        data = pd.read_csv(os.path.join(sys.path[0], "data/users.csv"))
-        data = data.to_dict()
+        user_data = db["users"].find()
 
-        return {"data": data}, 200 # Return data and "200 OK" code
+        return {"users": {user["userId"]: user["name"] for user in user_data}}, 200
 
     def post(self):
         """Returns all updated user data if request is successful."""
@@ -30,21 +37,16 @@ class User(Resource):
 
         args = parser.parse_args()
 
-        new_data = pd.DataFrame({
-            "userId": [args["userId"]],
-            "name": [args["name"]]
-        })
+        user_data = db["users"].find({"userId": args["userId"], "name": args["name"]})
 
-        data = pd.read_csv(os.path.join(sys.path[0], "data/users.csv"))
-
-        if args["userId"] in list(data["userId"]):
+        if args["userId"] in [user["userId"] for user in user_data]:
             return {"message": f"user '{args['userId']}' already exists."}, 401
 
-        data = pd.concat([data, new_data], ignore_index=True)
-        data.to_csv(os.path.join(sys.path[0], "data/users.csv"), index=False)
-        data = data.to_dict()
+        db["users"].insert_one({"userId": args["userId"], "name": args["name"]})
 
-        return {"data": data}, 200
+        user_data = db["users"].find()
+
+        return {"users": {user["userId"]: user["name"] for user in user_data}}, 200
     
     def delete(self):
         """Removes specified user from user data if request is successful."""
@@ -53,16 +55,15 @@ class User(Resource):
         parser.add_argument("userId", required=True)
         args = parser.parse_args()
 
-        data = pd.read_csv(os.path.join(sys.path[0], "data/users.csv"))
+        user_data = db["users"].find({"userId": args["userId"]})
 
-        if args["userId"] not in list(data["userId"]):
+        if args["userId"] not in [user["userId"] for user in user_data]:
             return {"message": f"user '{args['userId']}' does not exist."}, 404
 
-        data = data[data.userId != args["userId"]]
-        data.to_csv(os.path.join(sys.path[0], "data/users.csv"), index=False)
-        data = data.to_dict()
+        db["users"].delete_one({"userId": args["userId"]})
+        user_data = db["users"].find()
 
-        return {"data": data}, 200
+        return {"users": {user["userId"]: user["name"] for user in user_data}}, 200
 
         
 class TodoList(Resource):
