@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
 
-class UserRepository(ABC):
-    """Abstract class to access and update user data."""
+class TodoListRepository(ABC):
+    """Abstract class to access and update TodoList data."""
     @abstractmethod
     def get(self):
         pass
