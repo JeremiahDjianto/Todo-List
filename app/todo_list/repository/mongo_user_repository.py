@@ -16,7 +16,7 @@ class MongoUserRepository(UserRepository):
         else:
             user_data = self.collection.find()
 
-        return {"users": {user["userId"]: user["name"] for user in user_data}}
+        return {user["userId"]: user["name"] for user in user_data}
         
     def post(self, userId: str, name: str) -> bool:
         """Returns whether user was successfully created or if they already exists."""

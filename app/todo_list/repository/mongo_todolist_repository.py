@@ -16,7 +16,7 @@ class MongoTodoListRepository(TodoListRepository):
         else:
             data = self.collection.find({"userId": userId})
 
-        return {"todolists": {todolist["todolistId"]: todolist["name"] for todolist in data}}
+        return {todolist["todolistId"]: todolist["name"] for todolist in data}
         
     def post(self, userId: str, todolistId: str, name: str) -> bool:
         """Returns whether user was successfully created or if they already exists."""

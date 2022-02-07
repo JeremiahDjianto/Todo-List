@@ -18,7 +18,7 @@ class Users(Resource):
         parser.add_argument("userId")
         args = parser.parse_args()
 
-        return self.user_repo.get(args["userId"]), 200
+        return {"users": self.user_repo.get(args["userId"])}, 200
 
     def post(self):
         """Returns all updated user data if request is successful."""
@@ -62,7 +62,7 @@ class TodoLists(Resource):
         parser.add_argument("todolistId")
         args = parser.parse_args()
 
-        return self.list_repo.get(userId, args["todolistId"]), 200
+        return {"todolists": self.list_repo.get(userId, args["todolistId"])}, 200
 
     def post(self, userId: str):
         """Returns all updated user data if request is successful."""
