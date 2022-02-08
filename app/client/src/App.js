@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
 
 function App() {
@@ -9,18 +9,6 @@ function App() {
       <Link to="/users">See Users</Link>
     </div>
   )
-}
-
-function User(props) {
-  return (
-    <button className="user" onClick={props.onClick}>
-      props.value
-    </button>
-  )
-}
-
-function handleUserClick(userId) {
-
 }
 
 export default App;

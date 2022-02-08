@@ -1,49 +1,64 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
+import CreateUser from "./CreateUser";
 
-function Users() {
-  
-  const [data, setData] = useState([{}])
+class Users extends React.Component {
+  constructor() {
+    super();
+    this.state = {createUser: false, data: {}};
+  }
 
-  useEffect(()=> {
+  componentDidMount() {
+    this.fetchUsers();
+  }
+
+  componentDidUpdate(_prevProps, prevState) {
+    if (prevState.createUser && !this.state.createUser) {
+      this.fetchUsers();
+      console.log("Updated!");
+      console.log(`prevState: ${prevState.createUser}`);
+      console.log(`currState: ${this.state.createUser}`);
+    }
+    
+  }
+
+  fetchUsers = () => {
     fetch("/users", {method: "GET"}).then(
       response => response.json()
     ).then(
       data => {
-        setData(data)
+        this.setState({ data: data })
         console.log(data)
         console.log(data.users)
       }
-    )
-  }, [])
+    );
+  }
 
-  return (
-    <div>
-      {(typeof data.users === "undefined") ? (
-        <p>Loading ...</p>
+  toggleCreateUser = () => {
+    this.setState({createUser: !this.state.createUser});
+  }
+
+  render() {
+    return (
+      <div>
+        {(typeof this.state.data.users === "undefined") ? (
+          <p>Loading ...</p>
         ) : (
-        Object.entries(data.users).map(([userId, name]) =>
-          <><p>{userId}: {name}</p><User
-            value={name}
-            onClick={() => handleUserClick(userId)} />
+          Object.entries(this.state.data.users).map(([userId, name]) => 
+          <p>
             <Link to={`/users/${userId}/todolists`}>{name}</Link>
-            </>
-        )
-      )}
-    </div>
-  )
-}
-
-function User(props) {
-  return (
-    <button className="user" onClick={props.onClick}>
-      {props.value}
-    </button>
-  )
-}
-
-function handleUserClick(userId) {
-  
+          </p>
+          )
+        )}
+        <button onClick={this.toggleCreateUser}>
+          Create New User
+        </button>
+        {this.state.createUser ?
+          <CreateUser toggle={this.toggleCreateUser} />
+          : null}
+      </div>
+    );
+  }
 }
 
 export default Users;
