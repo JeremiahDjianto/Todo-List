@@ -5,37 +5,7 @@ import CreateUser from "./CreateUser";
 class Users extends React.Component {
   constructor() {
     super();
-    this.state = {createUser: false, data: {}};
-  }
-
-  componentDidMount() {
-    this.fetchUsers();
-  }
-
-  componentDidUpdate(_prevProps, prevState) {
-    if (prevState.createUser && !this.state.createUser) {
-      this.fetchUsers();
-      console.log("Updated!");
-      console.log(`prevState: ${prevState.createUser}`);
-      console.log(`currState: ${this.state.createUser}`);
-    }
-    
-  }
-
-  fetchUsers = () => {
-    fetch("/users", {method: "GET"}).then(
-      response => response.json()
-    ).then(
-      data => {
-        this.setState({ data: data })
-        console.log(data)
-        console.log(data.users)
-      }
-    );
-  }
-
-  toggleCreateUser = () => {
-    this.setState({createUser: !this.state.createUser});
+    this.state = {create: false, data: {}};
   }
 
   render() {
@@ -50,14 +20,39 @@ class Users extends React.Component {
           </p>
           )
         )}
-        <button onClick={this.toggleCreateUser}>
+        <button onClick={this.toggleCreate}>
           Create New User
         </button>
-        {this.state.createUser ?
-          <CreateUser toggle={this.toggleCreateUser} />
+        {this.state.create ?
+          <CreateUser toggle={this.toggleCreate} />
           : null}
       </div>
     );
+  }
+
+  componentDidMount() {
+    this.fetchMembers();
+  }
+
+  componentDidUpdate(_prevProps, prevState) {
+    if (prevState.create && !this.state.create) {
+      this.fetchMembers();
+    }
+    
+  }
+
+  fetchMembers = () => {
+    fetch("/users", {method: "GET"}).then(
+      response => response.json()
+    ).then(
+      data => {
+        this.setState({ data: data })
+      }
+    );
+  }
+
+  toggleCreate = () => {
+    this.setState({create: !this.state.create});
   }
 }
 
