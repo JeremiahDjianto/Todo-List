@@ -1,11 +1,12 @@
 import React from 'react';
 import CreateTodoList from './CreateTodoList';
+import DeleteTodoList from './DeleteTodoList';
 
 class TodoLists extends React.Component {
   constructor(props) {
     super(props);
     this.state = { userId: this.props.userId,
-      create: false, data: {} };
+      create: false, delete: false, toBeDeleted: "", data: {} };
   }
 
   render() {
@@ -15,7 +16,12 @@ class TodoLists extends React.Component {
           <p>Loading ...</p>
           ) : (
           Object.entries(this.state.data.todolists).map(([todolistId, name]) =>
-            <p>{todolistId}: {name}</p>
+            <p key={todolistId}>{todolistId}: {name}
+              &emsp;
+              <button onClick={() => this.toggleDelete(todolistId)}>
+                Delete
+              </button>
+            </p>
           )
         )}
         <button onClick={this.toggleCreate}>
@@ -23,6 +29,9 @@ class TodoLists extends React.Component {
         </button>
         {this.state.create? 
           <CreateTodoList userId={this.state.userId} toggle={this.toggleCreate} />
+          : null}
+        {this.state.delete? 
+          <DeleteTodoList userId={this.state.userId} todolistId={this.state.toBeDeleted} toggle={this.toggleDelete} />
           : null}
       </div>
     );
@@ -51,6 +60,11 @@ class TodoLists extends React.Component {
 
   toggleCreate = () => {
     this.setState({ create: !this.state.create});
+  }
+
+  toggleDelete = (todolistId) => {
+    this.setState({ toBeDeleted: todolistId});
+    this.setState({ delete: !this.state.delete});
   }
 }
 

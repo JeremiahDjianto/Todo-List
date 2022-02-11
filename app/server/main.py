@@ -15,7 +15,7 @@ def main(
     app = Flask(__name__)
     api = Api(app)
 
-    api.add_resource(Users, "/users", resource_class_kwargs={"user_repo": user_repo})
+    api.add_resource(Users, "/users", resource_class_kwargs={"user_repo": user_repo, "list_repo": list_repo})
     api.add_resource(TodoLists, "/users/<string:userId>/todolists", resource_class_kwargs={"list_repo": list_repo})
     
     app.run()

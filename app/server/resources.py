@@ -8,8 +8,9 @@ class Users(Resource):
     
     Users should have "Todo-Lists" which lists their tasks.
     """
-    def __init__(self, user_repo: UserRepository):
+    def __init__(self, user_repo: UserRepository, list_repo: TodoListRepository):
         self.user_repo = user_repo
+        self.list_repo = list_repo
         
     def get(self):
         """Returns data for a specified user or all data stored for users if request is successful."""
@@ -40,6 +41,11 @@ class Users(Resource):
 
         parser.add_argument("userId", required=True)
         args = parser.parse_args()
+
+        todolists = self.list_repo.get(args["userId"])
+
+        for todolistId in todolists.keys():
+            self.list_repo.delete(todolistId)
 
         if self.user_repo.delete(args["userId"]):
             return self.get()

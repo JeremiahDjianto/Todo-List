@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import CreateUser from "./CreateUser";
+import DeleteUser from "./DeleteUser";
 
 class Users extends React.Component {
   constructor() {
     super();
-    this.state = {create: false, data: {}};
+    this.state = {create: false, delete: false, toBeDeleted: "", data: {}};
   }
 
   render() {
@@ -15,8 +16,12 @@ class Users extends React.Component {
           <p>Loading ...</p>
         ) : (
           Object.entries(this.state.data.users).map(([userId, name]) => 
-          <p>
+          <p key={userId}>
             <Link to={`/users/${userId}/todolists`}>{name}</Link>
+            &emsp;
+            <button onClick={() => this.toggleDelete(userId)}>
+              Delete
+            </button>
           </p>
           )
         )}
@@ -26,6 +31,9 @@ class Users extends React.Component {
         {this.state.create ?
           <CreateUser toggle={this.toggleCreate} />
           : null}
+        {this.state.delete ?
+              <DeleteUser toggle={this.toggleDelete} userId={this.state.toBeDeleted} />
+              : null}
       </div>
     );
   }
@@ -53,6 +61,11 @@ class Users extends React.Component {
 
   toggleCreate = () => {
     this.setState({create: !this.state.create});
+  }
+
+  toggleDelete = (userId) => {
+    this.setState({toBeDeleted: userId});
+    this.setState({delete: !this.state.delete});
   }
 }
 
