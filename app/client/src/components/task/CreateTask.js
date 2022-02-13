@@ -1,11 +1,11 @@
 import React from "react";
 
-class CreateUser extends React.Component {
+
+class CreateTask extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {userId: "", name: ""};
+        this.state = {name: ""};
 
-        this.handleUserId = this.handleUserId.bind(this);
         this.handleName = this.handleName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -15,14 +15,10 @@ class CreateUser extends React.Component {
     }
     
     handleSubmit(event) {
-        alert(`The user ${this.state.name} was created.`);
-        fetch(`/users?userId=${this.state.userId}&name=${this.state.name}`, {method: "POST"});
+        alert(`The task ${this.state.name} was created.`);
+        fetch(`/users/${this.props.userId}/todolists/${this.props.todolistId}/tasks?&name=${this.state.name}`, {method: "POST"});
         event.preventDefault();
         this.handleClose();
-    }
-    
-    handleUserId(event) {
-        this.setState({userId: event.target.value});
     }
     
     handleName(event) {
@@ -38,11 +34,7 @@ class CreateUser extends React.Component {
                     </span>
                     <form onSubmit={this.handleSubmit}>
                         <label>
-                            User Id:
-                            <input type="text" value={this.state.userId} onChange={this.handleUserId} />
-                        </label>
-                        <label>
-                            Name:
+                            Task Name:
                             <input type="text" value={this.state.name} onChange={this.handleName} />
                         </label>
                         <input type="submit" value="Confirm" />
@@ -53,4 +45,4 @@ class CreateUser extends React.Component {
     }
 }
 
-export default CreateUser;
+export default CreateTask;

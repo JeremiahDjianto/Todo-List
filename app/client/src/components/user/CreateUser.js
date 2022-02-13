@@ -1,10 +1,10 @@
 import React from "react";
-class CreateTodoList extends React.Component {
+
+class CreateUser extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {todolistId: "", name: ""};
+        this.state = {userId: "", name: ""};
 
-        this.handleTodoListId = this.handleTodoListId.bind(this);
         this.handleName = this.handleName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -14,14 +14,10 @@ class CreateTodoList extends React.Component {
     }
     
     handleSubmit(event) {
-        alert(`The Todo-List ${this.state.name} was created.`);
-        fetch(`/users/${this.props.userId}/todolists?todolistId=${this.state.todolistId}&name=${this.state.name}`, {method: "POST"});
+        alert(`The user ${this.state.name} was created.`);
+        fetch(`/users?name=${this.state.name}`, {method: "POST"});
         event.preventDefault();
         this.handleClose();
-    }
-    
-    handleTodoListId(event) {
-        this.setState({todolistId: event.target.value});
     }
     
     handleName(event) {
@@ -37,11 +33,7 @@ class CreateTodoList extends React.Component {
                     </span>
                     <form onSubmit={this.handleSubmit}>
                         <label>
-                            Todo-List Id:
-                            <input type="text" value={this.state.todolistId} onChange={this.handleTodoListId} />
-                        </label>
-                        <label>
-                            Todo-List Name:
+                            Name:
                             <input type="text" value={this.state.name} onChange={this.handleName} />
                         </label>
                         <input type="submit" value="Confirm" />
@@ -52,4 +44,4 @@ class CreateTodoList extends React.Component {
     }
 }
 
-export default CreateTodoList;
+export default CreateUser;

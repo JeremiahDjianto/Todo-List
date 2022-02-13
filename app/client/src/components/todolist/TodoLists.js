@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CreateTodoList from './CreateTodoList';
 import DeleteTodoList from './DeleteTodoList';
+
 
 class TodoLists extends React.Component {
   constructor(props) {
@@ -16,7 +18,8 @@ class TodoLists extends React.Component {
           <p>Loading ...</p>
           ) : (
           Object.entries(this.state.data.todolists).map(([todolistId, name]) =>
-            <p key={todolistId}>{todolistId}: {name}
+            <p key={todolistId}>
+              <Link to={`/users/${this.state.userId}/todolists/${todolistId}/tasks`}>{name}</Link>
               &emsp;
               <button onClick={() => this.toggleDelete(todolistId)}>
                 Delete
@@ -41,7 +44,7 @@ class TodoLists extends React.Component {
     this.fetchMembers();
   }
   
-  compoenentDidUpdate(_prevProps, prevState) {
+  componentDidUpdate(_prevProps, prevState) {
     if (prevState.create && !this.state.create) {
       this.fetchMembers();
     }
@@ -53,7 +56,7 @@ class TodoLists extends React.Component {
     ).then(
       data => {
         this.setState({ data: data })
-        console.log(data);
+        console.log(data)
       }
     );
   }

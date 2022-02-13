@@ -1,9 +1,12 @@
 import React from "react";
 
-class DeleteTodoList extends React.Component {
+
+class CreateTodoList extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {todolistId: "", name: ""};
 
+        this.handleName = this.handleName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -12,10 +15,14 @@ class DeleteTodoList extends React.Component {
     }
     
     handleSubmit(event) {
-        alert(`The Todo-List ${this.props.todolistId} was deleted.`);
-        fetch(`/users/${this.props.userId}/todolists?todolistId=${this.props.todolistId}`, {method: "DELETE"});
+        alert(`The Todo-List ${this.state.name} was created.`);
+        fetch(`/users/${this.props.userId}/todolists?name=${this.state.name}`, {method: "POST"});
         event.preventDefault();
         this.handleClose();
+    }
+    
+    handleName(event) {
+        this.setState({name: event.target.value});
     }
     
     render() {
@@ -25,10 +32,11 @@ class DeleteTodoList extends React.Component {
                     <span className="close" onClick={this.handleClose}>
                         &times;
                     </span>
-                    <p>
-                        Are you sure you want to delete this Todo-List?
-                    </p>
                     <form onSubmit={this.handleSubmit}>
+                        <label>
+                            Todo-List Name:
+                            <input type="text" value={this.state.name} onChange={this.handleName} />
+                        </label>
                         <input type="submit" value="Confirm" />
                     </form>
                 </div>
@@ -37,4 +45,4 @@ class DeleteTodoList extends React.Component {
     }
 }
 
-export default DeleteTodoList;
+export default CreateTodoList;
