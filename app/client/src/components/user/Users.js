@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import CreateUser from "./CreateUser";
 import DeleteUser from "./DeleteUser";
 import "./Users.css";
-import { Button, Container, Row, Col } from "react-bootstrap";
+import { Button, Container, Row, Col, Card } from "react-bootstrap";
 
 class Users extends React.Component {
   constructor() {
@@ -19,25 +19,29 @@ class Users extends React.Component {
             <p>Loading ...</p>
           ) : (
             Object.entries(this.state.data.users).map(([userId, name]) => 
-            <Row className="my-2" key={userId}>
-              <Col xs={2}>
-                <Link to={`/users/${userId}/todolists`}>
-                  <Button>
-                    {name}
+            <Card key={userId} className="my-2">
+              <Row className="mx-1 m-2">
+                <Col>
+                  <Link to={`/users/${userId}/todolists`}>
+                    <Button>
+                      {name}
+                    </Button>
+                  </Link>
+                </Col>
+                <Col>
+                  <Button className="float-end" variant="danger" onClick={() => this.toggleDelete(userId)}>
+                    Delete
                   </Button>
-                </Link>
-              </Col>
-              <Col>
-                <Button variant="danger" onClick={() => this.toggleDelete(userId)}>
-                  Delete
-                </Button>
-              </Col>
-            </Row>
+                </Col>
+              </Row>
+            </Card>
             )
           )}
-          <Button variant="secondary" onClick={this.toggleCreate}>
-            Create New User
-          </Button>
+          <div className="text-center">
+            <Button className="my-2" variant="secondary" onClick={this.toggleCreate}>
+              Create New User
+            </Button>
+          </div>
           {this.state.create ?
             <CreateUser toggle={this.toggleCreate} />
             : null}

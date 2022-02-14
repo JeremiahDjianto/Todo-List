@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Container, Row, Col } from "react-bootstrap";
+import { Button, CloseButton, Container, Row, Col } from "react-bootstrap";
 
 
 class DeleteTask extends React.Component {
@@ -23,13 +23,19 @@ class DeleteTask extends React.Component {
     render() {
         return (
             <div className="DeleteTask">
-                <Button className="my-2" variant="danger" size="sm" onClick={this.handleClose}>
-                    &times;
-                </Button>
-                <p>Are you sure you want to delete this Task?</p>
-                <Button className="my-2" variant="success" onClick={this.handleSubmit}>
-                    Confirm
-                </Button>
+                <Row className="my-2">
+                    <Col>
+                        <p style={{ color: "white" }}>Are you sure you want to delete this Task?</p>
+                    </Col>
+                    <Col>
+                        <Button className="my-2" variant="success" onClick={this.handleSubmit}>
+                            Confirm
+                        </Button>
+                    </Col>
+                    <Col>
+                        <CloseButton className="my-2 float-end" variant="white" onClick={this.handleClose} />
+                    </Col>
+                </Row>   
             </div>
         );
     }

@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import CreateTodoList from './CreateTodoList';
 import DeleteTodoList from './DeleteTodoList';
-import { Button, Container, Row, Col } from "react-bootstrap";
+import "./TodoLists.css";
+import { Button, Card, Container, Row, Col } from "react-bootstrap";
 
 
 class TodoLists extends React.Component {
@@ -20,8 +21,9 @@ class TodoLists extends React.Component {
             <p>Loading ...</p>
             ) : (
             Object.entries(this.state.data.todolists).map(([todolistId, name]) =>
-              <Row className="my-2" key={todolistId}>
-                <Col xs={2}>
+            <Card key={todolistId} className="my-2">
+              <Row className="mx-1 my-2">
+                <Col>
                   <Link to={`/users/${this.state.userId}/todolists/${todolistId}/tasks`}>
                     <Button>
                       {name}
@@ -29,16 +31,19 @@ class TodoLists extends React.Component {
                   </Link>
                 </Col>
                 <Col>
-                <Button variant="danger" onClick={() => this.toggleDelete(todolistId)}>
+                <Button className="float-end" variant="danger" onClick={() => this.toggleDelete(todolistId)}>
                   Delete
                 </Button>
                 </Col>
               </Row>
+            </Card>
             )
           )}
-          <Button variant="secondary" onClick={this.toggleCreate}>
-            Create New Todo-List
-          </Button>
+          <div className="text-center">
+            <Button className="my-2" variant="secondary" onClick={this.toggleCreate}>
+              Create New Todo-List
+            </Button>
+          </div>
           {this.state.create? 
             <CreateTodoList userId={this.state.userId} toggle={this.toggleCreate} />
             : null}

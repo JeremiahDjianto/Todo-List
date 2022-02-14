@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Row, Col } from "react-bootstrap";
+import { Button, CloseButton, Form, Row, Col } from "react-bootstrap";
 
 
 class CreateTask extends React.Component {
@@ -29,25 +29,29 @@ class CreateTask extends React.Component {
     render() {
         return (
             <div className="CreateTask">
-                <Button className="my-2" variant="danger" size="sm" onClick={this.handleClose}>
-                    &times;
-                </Button>
                 <Form>
-                    <Row>
-                        <Form.Group controlId="formName">
-                            <Form.Label>
-                                Task Name
-                            </Form.Label>
-                            <Form.Control 
-                                type="text" 
-                                placeholder="Task Title"
-                                value={this.state.name}
-                                onChange={this.handleName}
-                            />
+                    <Row className="my-2">
+                        <Col>
+                            <Form.Group controlId="formName">
+                                <Form.Label style={{ color: "white" }}>
+                                    Task Name
+                                </Form.Label>
+                                <Form.Control 
+                                    type="text" 
+                                    placeholder="Task Name Here"
+                                    value={this.state.name}
+                                    onChange={this.handleName}
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col className="mt-4">
                             <Button className="my-2" variant="success" onClick={this.handleSubmit}>
                                 Confirm
                             </Button>
-                        </Form.Group>
+                        </Col>
+                        <Col>
+                            <CloseButton className="my-2 float-end" variant="white" onClick={this.handleClose} />
+                        </Col>
                     </Row>
                 </Form>
             </div>

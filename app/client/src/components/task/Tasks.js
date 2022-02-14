@@ -1,7 +1,8 @@
 import React from "react";
 import CreateTask from "./CreateTask";
 import DeleteTask from "./DeleteTask";
-import { Button, Container, Row, Col } from "react-bootstrap";
+import "./Tasks.css"
+import { Button, Card, Container, Row, Col } from "react-bootstrap";
 
 
 class Tasks extends React.Component {
@@ -24,21 +25,25 @@ class Tasks extends React.Component {
                         <p>Loading ...</p>
                     ) : (
                         Object.entries(this.state.data.tasks).map(([taskId, taskName]) => 
-                            <Row className="my-2" key={taskId}>
-                                <Col xs={2}>
-                                    {taskName}
-                                </Col>
-                                <Col>
-                                    <Button variant="danger" onClick={() => this.toggleDelete(taskId)}>
-                                        Delete
-                                    </Button>
-                                </Col>
-                            </Row>
+                            <Card key={taskId} className="my-2">
+                                <Row className="mx-1 my-2" key={taskId}>
+                                    <Col xs={2}>
+                                        {taskName}
+                                    </Col>
+                                    <Col>
+                                        <Button className="float-end" variant="danger" onClick={() => this.toggleDelete(taskId)}>
+                                            Delete
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Card>           
                         )
                     )}
-                    <Button variant="secondary" onClick={this.toggleCreate}>
-                        Create New Task
-                    </Button>
+                    <div className="text-center">
+                        <Button className="my-2" variant="secondary" onClick={this.toggleCreate}>
+                            Create New Task
+                        </Button>
+                    </div>
                     {this.state.create? 
                         <CreateTask userId={this.state.userId} todolistId={this.state.todolistId} toggle={this.toggleCreate} />
                         : null}
