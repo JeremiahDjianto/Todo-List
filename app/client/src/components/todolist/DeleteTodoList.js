@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Form, Row, Col }  from "react-bootstrap";
 
 
 class DeleteTodoList extends React.Component {
@@ -21,18 +22,14 @@ class DeleteTodoList extends React.Component {
     
     render() {
         return (
-            <div className="modal">
-                <div className="modal_content">
-                    <span className="close" onClick={this.handleClose}>
-                        &times;
-                    </span>
-                    <p>
-                        Are you sure you want to delete this Todo-List?
-                    </p>
-                    <form onSubmit={this.handleSubmit}>
-                        <input type="submit" value="Confirm" />
-                    </form>
-                </div>
+            <div className="DeleteTodoList">
+                <Button className="my-2" variant="danger" size="sm" onClick={this.handleClose}>
+                    &times;
+                </Button>
+                <p>Are you sure you want to delete this Todo-List?</p>
+                <Button className="my-2" variant="success" onClick={this.handleSubmit}>
+                    Confirm
+                </Button>
             </div>
         );
     }

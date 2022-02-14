@@ -1,6 +1,8 @@
 import React from "react";
 import CreateTask from "./CreateTask";
 import DeleteTask from "./DeleteTask";
+import { Button, Container, Row, Col } from "react-bootstrap";
+
 
 class Tasks extends React.Component {
     constructor(props) {
@@ -16,30 +18,35 @@ class Tasks extends React.Component {
 
     render() {
         return (
-            <div>
-                {typeof this.state.data.tasks === "undefined" ? (
-                    <p>Loading ...</p>
-                ) : (
-                    Object.entries(this.state.data.tasks).map(([taskId, taskName]) => 
-                        <p key={taskId}>
-                            {taskName}
-                            &emsp;
-                            <button onClick={() => this.toggleDelete(taskId)}>
-                                Delete
-                            </button>
-                        </p>
-                    )
-                )}
-                <button onClick={this.toggleCreate}>
-                    Create New Task
-                </button>
-                {this.state.create? 
-                    <CreateTask userId={this.state.userId} todolistId={this.state.todolistId} toggle={this.toggleCreate} />
-                    : null}
-                {this.state.delete? 
-                    <DeleteTask userId={this.state.userId} todolistId={this.state.todolistId} 
-                        taskId={this.state.toBeDeleted} toggle={this.toggleDelete} />
-                    : null}
+            <div className="Tasks">
+                <Container>
+                    {typeof this.state.data.tasks === "undefined" ? (
+                        <p>Loading ...</p>
+                    ) : (
+                        Object.entries(this.state.data.tasks).map(([taskId, taskName]) => 
+                            <Row className="my-2" key={taskId}>
+                                <Col xs={2}>
+                                    {taskName}
+                                </Col>
+                                <Col>
+                                    <Button variant="danger" onClick={() => this.toggleDelete(taskId)}>
+                                        Delete
+                                    </Button>
+                                </Col>
+                            </Row>
+                        )
+                    )}
+                    <Button variant="secondary" onClick={this.toggleCreate}>
+                        Create New Task
+                    </Button>
+                    {this.state.create? 
+                        <CreateTask userId={this.state.userId} todolistId={this.state.todolistId} toggle={this.toggleCreate} />
+                        : null}
+                    {this.state.delete? 
+                        <DeleteTask userId={this.state.userId} todolistId={this.state.todolistId} 
+                            taskId={this.state.toBeDeleted} toggle={this.toggleDelete} />
+                        : null}
+                </Container>
             </div>
         );
     }

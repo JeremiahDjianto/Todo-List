@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import CreateTodoList from './CreateTodoList';
 import DeleteTodoList from './DeleteTodoList';
+import { Button, Container, Row, Col } from "react-bootstrap";
 
 
 class TodoLists extends React.Component {
@@ -13,29 +14,38 @@ class TodoLists extends React.Component {
 
   render() {
     return (
-      <div>
-        {(typeof this.state.data.todolists === "undefined") ? (
-          <p>Loading ...</p>
-          ) : (
-          Object.entries(this.state.data.todolists).map(([todolistId, name]) =>
-            <p key={todolistId}>
-              <Link to={`/users/${this.state.userId}/todolists/${todolistId}/tasks`}>{name}</Link>
-              &emsp;
-              <button onClick={() => this.toggleDelete(todolistId)}>
-                Delete
-              </button>
-            </p>
-          )
-        )}
-        <button onClick={this.toggleCreate}>
-          Create New Todo-List
-        </button>
-        {this.state.create? 
-          <CreateTodoList userId={this.state.userId} toggle={this.toggleCreate} />
-          : null}
-        {this.state.delete? 
-          <DeleteTodoList userId={this.state.userId} todolistId={this.state.toBeDeleted} toggle={this.toggleDelete} />
-          : null}
+      <div className="TodoLists">
+        <Container>
+          {(typeof this.state.data.todolists === "undefined") ? (
+            <p>Loading ...</p>
+            ) : (
+            Object.entries(this.state.data.todolists).map(([todolistId, name]) =>
+              <Row className="my-2" key={todolistId}>
+                <Col xs={2}>
+                  <Link to={`/users/${this.state.userId}/todolists/${todolistId}/tasks`}>
+                    <Button>
+                      {name}
+                    </Button>
+                  </Link>
+                </Col>
+                <Col>
+                <Button variant="danger" onClick={() => this.toggleDelete(todolistId)}>
+                  Delete
+                </Button>
+                </Col>
+              </Row>
+            )
+          )}
+          <Button variant="secondary" onClick={this.toggleCreate}>
+            Create New Todo-List
+          </Button>
+          {this.state.create? 
+            <CreateTodoList userId={this.state.userId} toggle={this.toggleCreate} />
+            : null}
+          {this.state.delete? 
+            <DeleteTodoList userId={this.state.userId} todolistId={this.state.toBeDeleted} toggle={this.toggleDelete} />
+            : null}
+        </Container>
       </div>
     );
   }

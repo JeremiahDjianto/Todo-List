@@ -1,4 +1,6 @@
 import React from "react";
+import { Button, Form, Row, Col }  from "react-bootstrap";
+
 
 class CreateUser extends React.Component {
     constructor(props) {
@@ -26,19 +28,28 @@ class CreateUser extends React.Component {
     
     render() {
         return (
-            <div className="modal">
-                <div className="modal_content">
-                    <span className="close" onClick={this.handleClose}>
-                        &times;
-                    </span>
-                    <form onSubmit={this.handleSubmit}>
-                        <label>
-                            Name:
-                            <input type="text" value={this.state.name} onChange={this.handleName} />
-                        </label>
-                        <input type="submit" value="Confirm" />
-                    </form>
-                </div>
+            <div className="CreateUser">
+                <Button className="my-2" variant="danger" size="sm" onClick={this.handleClose}>
+                    &times;
+                </Button>
+                <Form>
+                    <Row>
+                        <Form.Group controlId="formName">
+                            <Form.Label>
+                                User Name
+                            </Form.Label>
+                            <Form.Control 
+                                type="text" 
+                                placeholder="Your Name Here"
+                                value={this.state.name}
+                                onChange={this.handleName}
+                            />
+                            <Button className="my-2" variant="success" onClick={this.handleSubmit}>
+                                Confirm
+                            </Button>
+                        </Form.Group>
+                    </Row>
+                </Form>
             </div>
         );
     }
