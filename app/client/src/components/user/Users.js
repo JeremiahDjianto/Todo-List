@@ -16,7 +16,7 @@ class Users extends React.Component {
     return (
       <div className="list-page">        
         <Container>
-        <TodoListHeader subtitle="My Users" />
+        <TodoListHeader subtitle="My Users" />  
           {(typeof this.state.data.users === "undefined") ? (
             <p>Loading ...</p>
           ) : (
