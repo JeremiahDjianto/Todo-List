@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import TodoListHeader from '../TodoListHeader';
 import CreateUser from "./CreateUser";
 import DeleteUser from "./DeleteUser";
-import "./Users.css";
+import "../common.css";
 import { Button, Container, Row, Col, Card } from "react-bootstrap";
 
 class Users extends React.Component {
@@ -13,32 +14,35 @@ class Users extends React.Component {
 
   render() {
     return (
-      <div className="Users">
+      <div className="list-page">        
         <Container>
+        <TodoListHeader subtitle="My Users" />
           {(typeof this.state.data.users === "undefined") ? (
             <p>Loading ...</p>
           ) : (
             Object.entries(this.state.data.users).map(([userId, name]) => 
-            <Card key={userId} className="my-2">
-              <Row className="mx-1 m-2">
-                <Col>
-                  <Link to={`/users/${userId}/todolists`}>
-                    <Button>
-                      {name}
-                    </Button>
-                  </Link>
-                </Col>
-                <Col>
-                  <Button className="float-end" variant="danger" onClick={() => this.toggleDelete(userId)}>
-                    Delete
-                  </Button>
-                </Col>
-              </Row>
-            </Card>
+            <Row key={userId} className="my-3">
+              <Col xs={10}>
+                <Link className="link" to={`/users/${userId}/todolists`} style={{ color: "black" }}>
+                  <Card>
+                    <Card.Body>
+                      <Card.Title>
+                        {name}
+                      </Card.Title>
+                    </Card.Body>
+                  </Card>
+                </Link>
+              </Col>
+              <Col className="my-auto">
+                <Button className="float-end" size="lg" variant="danger" onClick={() => this.toggleDelete(userId)}>
+                  Delete
+                </Button>
+              </Col>
+            </Row>
             )
           )}
           <div className="text-center">
-            <Button className="my-2" variant="secondary" onClick={this.toggleCreate}>
+            <Button className="my-2" size="lg" variant="secondary" onClick={this.toggleCreate}>
               Create New User
             </Button>
           </div>

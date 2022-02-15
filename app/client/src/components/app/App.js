@@ -9,9 +9,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Welcome to my Todo-List app :)</h1>
+        <h1 className="m-5">Welcome to My Todo-List</h1>
         <Link to="/users">
-          <Button>
+          <Button size="lg">
             See Users
           </Button>
         </Link>

@@ -25,7 +25,7 @@ class DeleteTask extends React.Component {
             <div className="DeleteTask">
                 <Row className="my-2">
                     <Col>
-                        <p style={{ color: "white" }}>Are you sure you want to delete this Task?</p>
+                        <p className="mt-3" style={{ color: "white" }}>Are you sure you want to delete this Task?</p>
                     </Col>
                     <Col>
                         <Button className="my-2" variant="success" onClick={this.handleSubmit}>

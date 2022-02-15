@@ -1,7 +1,8 @@
 import React from "react";
+import TodoListHeader from "../TodoListHeader";
 import CreateTask from "./CreateTask";
 import DeleteTask from "./DeleteTask";
-import "./Tasks.css"
+import "../common.css"
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
 
 
@@ -19,28 +20,33 @@ class Tasks extends React.Component {
 
     render() {
         return (
-            <div className="Tasks">
+            <div className="list-page">
                 <Container>
+                    <TodoListHeader subtitle="My Tasks" />
                     {typeof this.state.data.tasks === "undefined" ? (
                         <p>Loading ...</p>
                     ) : (
                         Object.entries(this.state.data.tasks).map(([taskId, taskName]) => 
-                            <Card key={taskId} className="my-2">
-                                <Row className="mx-1 my-2" key={taskId}>
-                                    <Col xs={2}>
-                                        {taskName}
-                                    </Col>
-                                    <Col>
-                                        <Button className="float-end" variant="danger" onClick={() => this.toggleDelete(taskId)}>
-                                            Delete
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </Card>           
+                            <Row key={taskId} className="my-3">
+                                <Col xs={10}>
+                                    <Card>
+                                        <Card.Body>
+                                            <Card.Title>
+                                                {taskName}
+                                            </Card.Title>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                                <Col className="my-auto">
+                                    <Button className="float-end" size="lg" variant="danger" onClick={() => this.toggleDelete(taskId)}>
+                                        Delete
+                                    </Button>
+                                </Col>
+                            </Row>           
                         )
                     )}
                     <div className="text-center">
-                        <Button className="my-2" variant="secondary" onClick={this.toggleCreate}>
+                        <Button className="my-2" size="lg" variant="secondary" onClick={this.toggleCreate}>
                             Create New Task
                         </Button>
                     </div>

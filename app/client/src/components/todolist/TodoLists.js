@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import TodoListHeader from '../TodoListHeader';
 import CreateTodoList from './CreateTodoList';
 import DeleteTodoList from './DeleteTodoList';
-import "./TodoLists.css";
+import "../common.css";
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
 
 
@@ -15,32 +16,36 @@ class TodoLists extends React.Component {
 
   render() {
     return (
-      <div className="TodoLists">
+      <div className="list-page">
         <Container>
+          <TodoListHeader subtitle="My Todo-Lists" />
           {(typeof this.state.data.todolists === "undefined") ? (
             <p>Loading ...</p>
             ) : (
             Object.entries(this.state.data.todolists).map(([todolistId, name]) =>
-            <Card key={todolistId} className="my-2">
-              <Row className="mx-1 my-2">
-                <Col>
-                  <Link to={`/users/${this.state.userId}/todolists/${todolistId}/tasks`}>
-                    <Button>
-                      {name}
-                    </Button>
-                  </Link>
-                </Col>
-                <Col>
-                <Button className="float-end" variant="danger" onClick={() => this.toggleDelete(todolistId)}>
+            <Row key={todolistId} className="my-3">
+              <Col xs={10}>
+                <Link className="link" to={`/users/${this.state.userId}/todolists/${todolistId}/tasks`}
+                  style={{ color: "black" }}>
+                  <Card>
+                    <Card.Body>
+                      <Card.Title>
+                        {name}
+                      </Card.Title>
+                    </Card.Body>
+                  </Card>
+                </Link>
+              </Col>
+              <Col className="my-auto">
+                <Button className="float-end" size="lg" variant="danger" onClick={() => this.toggleDelete(todolistId)}>
                   Delete
                 </Button>
-                </Col>
-              </Row>
-            </Card>
+              </Col>
+            </Row>
             )
           )}
           <div className="text-center">
-            <Button className="my-2" variant="secondary" onClick={this.toggleCreate}>
+            <Button className="my-2" size="lg" variant="secondary" onClick={this.toggleCreate}>
               Create New Todo-List
             </Button>
           </div>
