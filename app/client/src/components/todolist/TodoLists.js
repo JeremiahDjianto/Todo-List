@@ -65,7 +65,7 @@ class TodoLists extends React.Component {
   }
   
   componentDidUpdate(_prevProps, prevState) {
-    if (prevState.create && !this.state.create) {
+    if ((prevState.create && !this.state.create) || (prevState.delete && !this.state.delete)) {
       this.fetchMembers();
     }
   }
