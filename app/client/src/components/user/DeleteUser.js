@@ -14,10 +14,19 @@ class DeleteUser extends React.Component {
     }
     
     handleSubmit(event) {
-        alert(`The user ${this.props.userId} was deleted.`);
-        fetch(`/users?userId=${this.props.userId}`, {method: "DELETE"});
-        event.preventDefault();
-        this.handleClose();
+        const userId = this.props.userId;
+
+        fetch(`/users?userId=${userId}`, {method: "DELETE"}).then(
+            () => {
+                event.preventDefault();
+                this.handleClose();
+                alert(`The user ${userId} was deleted.`);
+            }
+        ).catch(
+            () => {
+                alert(`An error occured trying to delete the user ${userId}.`);
+            }
+        );
     }
     
     render() {

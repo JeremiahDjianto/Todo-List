@@ -14,10 +14,20 @@ class DeleteTask extends React.Component {
     }
     
     handleSubmit(event) {
-        alert(`The Task with id ${this.props.taskId} was deleted.`);
-        fetch(`/users/${this.props.userId}/todolists/${this.props.todolistId}/tasks?taskId=${this.props.taskId}`, {method: "DELETE"});
-        event.preventDefault();
-        this.handleClose();
+        const taskId = this.props.taskId;
+
+        fetch(`/users/${this.props.userId}/todolists/${this.props.todolistId}/tasks?taskId=${taskId}`, {method: "DELETE"}).then(
+            () => {
+                event.preventDefault();
+                this.handleClose();
+                alert(`The Task with id ${taskId} was deleted.`);
+            }
+        ).catch(
+            () => {
+                alert(`An error occured trying to delete the task ${taskId}.`)
+            }
+        );
+        
     }
     
     render() {

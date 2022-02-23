@@ -16,10 +16,18 @@ class CreateTodoList extends React.Component {
     }
     
     handleSubmit(event) {
-        alert(`The Todo-List ${this.state.name} was created.`);
-        fetch(`/users/${this.props.userId}/todolists?name=${this.state.name}`, {method: "POST"});
-        event.preventDefault();
-        this.handleClose();
+        fetch(`/users/${this.props.userId}/todolists?name=${this.state.name}`, {method: "POST"}).then(
+            () => {
+                event.preventDefault();
+                this.handleClose();
+                alert(`The Todo-List ${this.state.name} was created.`);
+            }
+        ).catch(
+            () => {
+                alert(`An error occured trying to create the Todo-List ${this.state.name}.`)
+            }
+        );
+        
     }
     
     handleName(event) {

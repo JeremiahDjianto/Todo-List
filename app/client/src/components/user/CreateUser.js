@@ -17,10 +17,17 @@ class CreateUser extends React.Component {
     }
     
     handleSubmit(event) {
-        alert(`The user ${this.state.name} was created.`);
-        fetch(`/users?name=${this.state.name}`, {method: "POST"});
-        event.preventDefault();
-        this.handleClose();
+        fetch(`/users?name=${this.state.name}`, {method: "POST"}).then(
+            () => {
+                event.preventDefault();
+                this.handleClose();
+                alert(`The user ${this.state.name} was created.`);
+            }
+        ).catch(
+            () => {
+                alert(`An error occured trying to create the user ${this.state.name}.`);
+            }
+        );
     }
     
     handleName(event) {

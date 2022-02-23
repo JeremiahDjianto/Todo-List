@@ -14,10 +14,21 @@ class DeleteTodoList extends React.Component {
     }
     
     handleSubmit(event) {
-        alert(`The Todo-List ${this.props.todolistId} was deleted.`);
-        fetch(`/users/${this.props.userId}/todolists?todolistId=${this.props.todolistId}`, {method: "DELETE"});
-        event.preventDefault();
-        this.handleClose();
+        const todolistId = this.props.todolistId;
+
+        
+        fetch(`/users/${this.props.userId}/todolists?todolistId=${todolistId}`, {method: "DELETE"}).then(
+            () => {
+                event.preventDefault();
+                this.handleClose();
+                alert(`The Todo-List ${todolistId} was deleted.`);
+            }
+        ).catch(
+            () => {
+                alert(`An error occured trying to delete the Todo-List ${todolistId}`)
+            }
+        );
+        
     }
     
     render() {
