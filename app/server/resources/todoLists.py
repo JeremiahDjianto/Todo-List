@@ -41,7 +41,7 @@ class TodoLists(Resource):
     
     def delete(self, userId: str):
         """Returns all updated todolist data if requeset is successful 
-        and removes specified user from user data if request is successful."""
+        and removes specified todolist from todolist data if request is successful."""
         parser = reqparse.RequestParser()
 
         parser.add_argument("todolistId", required=True)

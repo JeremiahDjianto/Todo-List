@@ -33,10 +33,24 @@ class Tasks(Resource):
             return self.get(userId, todolistId, all=True)
 
         return {"message": f"task '{args['name']}' already exists."}, 401
-    
+
+    def put(self, userId: str, todolistId: str):
+        """Returns all updated tasks if request is successful and
+        updates specified task from task data if request is successful."""
+        parser = reqparse.RequestParser()
+
+        parser.add_argument("taskId", required=True)
+        parser.add_argument("done", required=True)
+        args = parser.parse_args()
+
+        if self.task_repo.put(args["taskId"], args["done"]):
+            return self.get(userId, todolistId, all=True)
+
+        return {"message": f"task with id '{args['taskId']}' does not exist."}, 404
+
     def delete(self, userId: str, todolistId: str):
         """Returns all updated tasks if request is successful and 
-        removes specified user from user data if request is successful."""
+        removes specified task from task data if request is successful."""
         parser = reqparse.RequestParser()
 
         parser.add_argument("taskId", required=True)

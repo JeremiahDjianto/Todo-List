@@ -12,5 +12,9 @@ class TaskRepository(ABC):
         pass
 
     @abstractmethod
+    def put(self, taskId: str, done: str) -> bool:
+        pass
+
+    @abstractmethod
     def delete(self, taskId: str) -> bool:
         pass

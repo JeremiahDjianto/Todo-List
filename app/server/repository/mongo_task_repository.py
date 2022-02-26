@@ -17,23 +17,34 @@ class MongoTaskRepository(TaskRepository):
         else:
             data = self.collection.find({"userId": userId, "todolistId": todolistId})
 
-        return {str(todolist["_id"]): todolist["name"] for todolist in data}
+        return {str(task["_id"]): {"name": task["name"], "done": task["done"]} for task in data}
     
     def post(self, userId: str, todolistId: str, name: str) -> bool:
         """Returns whether task was successfully created or if it already exists."""
         data = self.collection.find({"userId": userId, "todolistId": todolistId, "name": name})
 
-        if name in [todolist["name"] for todolist in data]:
+        if name in [task["name"] for task in data]:
             return False
 
-        self.collection.insert_one({"userId": userId, "todolistId": todolistId, "name": name})
+        self.collection.insert_one({"userId": userId, "todolistId": todolistId, "name": name, "done": "false"})
+        return True
+
+    def put(self, taskId: str, done: str) -> bool:
+        """Returns whether 'done' field of task was successfully updated with the value
+        done."""
+        data = self.collection.find({"_id": ObjectId(taskId)})
+
+        if taskId not in [str(task["_id"]) for task in data]:
+            return False
+
+        self.collection.update_one({"_id": ObjectId(taskId)}, {"$set": {"done": done}})
         return True
 
     def delete(self, taskId: str) -> bool:
         """Returns whether the task was successfully deleted."""
         data = self.collection.find({"_id": ObjectId(taskId)})
 
-        if taskId not in [str(todolist["_id"]) for todolist in data]:
+        if taskId not in [str(task["_id"]) for task in data]:
             return False
 
         self.collection.delete_one({"_id": ObjectId(taskId)})
