@@ -32,7 +32,7 @@ class Tasks extends React.Component {
                                     <Card>
                                         <Card.Body>
                                             <Card.Title>
-                                                {taskName}
+                                                {taskName["name"]}
                                             </Card.Title>
                                         </Card.Body>
                                     </Card>
