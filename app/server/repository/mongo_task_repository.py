@@ -26,10 +26,10 @@ class MongoTaskRepository(TaskRepository):
         if name in [task["name"] for task in data]:
             return False
 
-        self.collection.insert_one({"userId": userId, "todolistId": todolistId, "name": name, "done": "false"})
+        self.collection.insert_one({"userId": userId, "todolistId": todolistId, "name": name, "done": bool(0)})
         return True
 
-    def put(self, taskId: str, done: str) -> bool:
+    def put(self, taskId: str, done: bool) -> bool:
         """Returns whether 'done' field of task was successfully updated with the value
         done."""
         data = self.collection.find({"_id": ObjectId(taskId)})

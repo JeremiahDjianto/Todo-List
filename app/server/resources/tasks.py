@@ -43,7 +43,7 @@ class Tasks(Resource):
         parser.add_argument("done", required=True)
         args = parser.parse_args()
 
-        if self.task_repo.put(args["taskId"], args["done"]):
+        if self.task_repo.put(args["taskId"], args["done"].lower() == "true"):
             return self.get(userId, todolistId, all=True)
 
         return {"message": f"task with id '{args['taskId']}' does not exist."}, 404

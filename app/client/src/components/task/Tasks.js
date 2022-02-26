@@ -3,7 +3,7 @@ import TodoListHeader from "../TodoListHeader";
 import CreateTask from "./CreateTask";
 import DeleteTask from "./DeleteTask";
 import "../common.css"
-import { Button, Card, Container, Row, Col } from "react-bootstrap";
+import { Button, Card, Container, Form, Row, Col } from "react-bootstrap";
 
 
 class Tasks extends React.Component {
@@ -26,13 +26,18 @@ class Tasks extends React.Component {
                     {typeof this.state.data.tasks === "undefined" ? (
                         <p>Loading ...</p>
                     ) : (
-                        Object.entries(this.state.data.tasks).map(([taskId, taskName]) => 
+                        Object.entries(this.state.data.tasks).map(([taskId, taskInfo]) => 
                             <Row key={taskId} className="my-3">
                                 <Col xs={10}>
                                     <Card>
                                         <Card.Body>
                                             <Card.Title>
-                                                {taskName["name"]}
+                                                {taskInfo["name"]}
+                                                <Form.Check 
+                                                className="float-end"
+                                                type="checkbox" 
+                                                defaultChecked={taskInfo["done"]}
+                                                onChange={() => this.toggleDone(taskId, (!taskInfo["done"]).toString())} />
                                             </Card.Title>
                                         </Card.Body>
                                     </Card>
@@ -88,8 +93,19 @@ class Tasks extends React.Component {
     }
     
     toggleDelete = (taskId) => {
-    this.setState({ toBeDeleted: taskId});
-    this.setState({ delete: !this.state.delete});
+        this.setState({ toBeDeleted: taskId});
+        this.setState({ delete: !this.state.delete});
+    }
+
+    toggleDone = (taskId, done) => {
+        fetch(`/users/${this.state.userId}/todolists/${this.state.todolistId}/tasks?taskId=${taskId}&done=${done}`, {method: "PUT"}).then(
+            response => response.json()
+        ).then(
+            data => {
+                this.setState({data: data})
+                console.log(data)
+            }
+        );
     }
     
 }

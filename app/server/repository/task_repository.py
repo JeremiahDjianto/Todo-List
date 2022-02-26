@@ -12,7 +12,7 @@ class TaskRepository(ABC):
         pass
 
     @abstractmethod
-    def put(self, taskId: str, done: str) -> bool:
+    def put(self, taskId: str, done: bool) -> bool:
         pass
 
     @abstractmethod
