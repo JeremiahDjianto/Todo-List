@@ -4,7 +4,7 @@ import TodoListHeader from '../TodoListHeader';
 import CreateUser from "./CreateUser";
 import DeleteUser from "./DeleteUser";
 import "../common.css";
-import { Button, Container, Row, Col, Card } from "react-bootstrap";
+import { Button, Container, Row, Col, Card, Navbar, Nav } from "react-bootstrap";
 
 class Users extends React.Component {
   constructor() {
@@ -14,9 +14,9 @@ class Users extends React.Component {
 
   render() {
     return (
-      <div className="list-page">        
+      <div className="list-page">
         <Container>
-        <TodoListHeader subtitle="My Users" />  
+          <TodoListHeader subtitle="Users" />
           {(typeof this.state.data.users === "undefined") ? (
             <p>Loading ...</p>
           ) : (
@@ -41,14 +41,17 @@ class Users extends React.Component {
             </Row>
             )
           )}
+
           <div className="text-center">
             <Button className="my-2" size="lg" variant="secondary" onClick={this.toggleCreate}>
               Create New User
             </Button>
           </div>
+
           {this.state.create ?
             <CreateUser toggle={this.toggleCreate} />
             : null}
+
           {this.state.delete ?
                 <DeleteUser toggle={this.toggleDelete} userId={this.state.toBeDeleted} />
                 : null}

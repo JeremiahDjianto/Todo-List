@@ -10,7 +10,7 @@ import { Button, Card, Container, Row, Col } from "react-bootstrap";
 class TodoLists extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { userId: this.props.userId,
+    this.state = { userId: this.props.userId, userName: "",
       create: false, delete: false, toBeDeleted: "", data: {} };
   }
 
@@ -18,10 +18,11 @@ class TodoLists extends React.Component {
     return (
       <div className="list-page">
         <Container>
-          <TodoListHeader subtitle="My Todo-Lists" />
+          <TodoListHeader subtitle={`${this.state.userName}'s Todo-Lists`}/>
           {(typeof this.state.data.todolists === "undefined") ? (
             <p>Loading ...</p>
-            ) : (
+            ) : 
+            (
             Object.entries(this.state.data.todolists).map(([todolistId, name]) =>
             <Row key={todolistId} className="my-3">
               <Col xs={10}>
@@ -62,6 +63,7 @@ class TodoLists extends React.Component {
 
   componentDidMount() {
     this.fetchMembers();
+    this.fetchTitle();
   }
   
   componentDidUpdate(_prevProps, prevState) {
@@ -77,6 +79,16 @@ class TodoLists extends React.Component {
       data => {
         this.setState({ data: data })
         console.log(data)
+      }
+    );
+  }
+
+  fetchTitle = () => {
+    fetch(`/users?userId=${this.state.userId}`, {method: "GET"}).then(
+      response => response.json()
+    ).then(
+      data => {
+        this.setState({ userName: data["users"][this.state.userId] })
       }
     );
   }

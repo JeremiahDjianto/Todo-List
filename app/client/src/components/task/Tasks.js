@@ -9,8 +9,10 @@ import { Button, Card, Container, Form, Row, Col } from "react-bootstrap";
 class Tasks extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { userId: this.props.userId,
+        this.state = {  userId: this.props.userId,
+                        userName: "",
                         todolistId: this.props.todolistId,
+                        todolistName: "",
                         create: false,
                         delete: false,
                         toBeDeleted: "",
@@ -22,7 +24,7 @@ class Tasks extends React.Component {
         return (
             <div className="list-page">
                 <Container>
-                    <TodoListHeader subtitle="My Tasks" />
+                    <TodoListHeader subtitle={`${this.state.userName}'s ${this.state.todolistName} Tasks`} />
                     {typeof this.state.data.tasks === "undefined" ? (
                         <p>Loading ...</p>
                     ) : (
@@ -69,6 +71,7 @@ class Tasks extends React.Component {
 
     componentDidMount() {
         this.fetchMembers();
+        this.fetchTitle();
     }
 
     componentDidUpdate(_prevProps, prevState) {
@@ -84,6 +87,24 @@ class Tasks extends React.Component {
             data => {
                 this.setState({data: data})
                 console.log(data)
+            }
+        );
+    }
+
+    fetchTitle = () => {
+        fetch(`/users?userId=${this.state.userId}`, {method: "GET"}).then(
+            response => response.json()
+        ).then(
+            data => {
+                this.setState({ userName: data["users"][this.state.userId] })
+            }
+        );
+
+        fetch(`/users/${this.state.userId}/todolists?todolistId=${this.state.todolistId}`, {method: "GET"}).then(
+            response => response.json()
+        ).then(
+            data => {
+                this.setState({ todolistName: data["todolists"][this.state.todolistId] })
             }
         );
     }
